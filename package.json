@@ -4,11 +4,20 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "build": "vue-cli-service build && tsc -p server/tsconfig.json",
+    "lint": "vue-cli-service lint",
+    "dev": "concurrently \"npm run serve\" \"tsc -w -p server/tsconfig.json\" \"nodemon dist-server/index.js\"",
+    "server": "concurrently \"tsc -w -p server/tsconfig.json\" \"nodemon dist-server/index.js\""
   },
   "dependencies": {
+    "axios": "^0.20.0",
+    "body-parser": "^1.19.0",
     "core-js": "^3.6.5",
+    "cors": "^2.8.5",
+    "dayjs": "^1.9.4",
+    "express": "^4.17.1",
+    "mongoose": "^5.10.9",
+    "tailwindcss": "^1.9.5",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^8.4.2",

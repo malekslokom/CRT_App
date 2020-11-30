@@ -6,9 +6,10 @@
       <router-link to="/about">About</router-link>
     </div>
     <router-view />-->
-    <div class="h-screen bg-blue-500">
-      <navbar/>
-      <Calendar/>
+    <div class="h-screen ">
+      
+  
+      <router-view />
     </div>
   
 </template>
@@ -16,11 +17,12 @@
 <script lang="ts">
 import axios from "axios";
 
-import Navbar from "@/components/shared/Navbar.vue";
+
 import Calendar from "@/components/calendar/Calendar.vue";
 
+
 import { Component, Prop, Vue } from "vue-property-decorator";
-@Component({components:{Navbar,Calendar}})
+@Component({components:{Calendar}})
 
 export default class App extends Vue {
 

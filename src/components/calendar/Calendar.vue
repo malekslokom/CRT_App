@@ -1,5 +1,8 @@
 <template>
+<div  class="w-full h-full overflow-hidden" >
+<navbar/>
   <div class="relative m-10 h-10/12 bg-white ">
+  
   <div class="absolute h-full w-full">
       <div class="relative flex justify-center" >
         <p class=" text-lg capitalize">{{month}} {{year}}</p>
@@ -15,14 +18,15 @@
                     <div class="border h-full bg-gray-100"></div>
             </div>
             <div v-for="i in nbDays" :key="i+'c'" class="w-1/7 h-1/3 p-1">
-                    <div :class=" i == dateDay && month == initMonth ? 'border h-full bg-blue-300  hover:bg-blue-200 cursor-pointer' : 'border h-full bg-gray-300 cursor-pointer  hover:bg-gray-200'" @click="Note(i)">
+                    <div :class=" i == dateDay && month == initMonth ? 'border h-full bg-red-600  hover:bg-red-500 cursor-pointer' : 'border h-full bg-gray-300 cursor-pointer  hover:bg-gray-200'" @click="Note(i)">
                         {{i}}
                      </div>
           </div>
       </div>
   </div>
-      <note v-if="note" :jour="i" @close="Note"/>
+      <note v-if="note" :jour="i" @close="Note" />
    </div>   
+</div>
 </template>
 
 <script lang="ts">
@@ -31,11 +35,12 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/fr' // import locale
 
 import Note from "./NoteCalendar.vue";
+import Navbar from "@/components/shared/Navbar.vue";
 
 import { Component, Prop, Vue } from "vue-property-decorator";
-@Component({components:{Note}})
+@Component({components:{Note,Navbar}})
 
-export default class App extends Vue {
+export default class Calendar extends Vue {
 note=false
 index=0;
 month="";
@@ -87,8 +92,9 @@ prev(){
     this.index -=1;
     this.nextMonth();
 }
+i=0;
 Note(i:number){
-    console.log(i);
+    this.i=i;
     this.note= !this.note;
 }
 }

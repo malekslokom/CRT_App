@@ -33,4 +33,10 @@
 .btn:focus {
   @apply outline-none;
 }
+.toggle-checkbox:checked {
+  @apply right-0 border-red-700;
+}
+.toggle-checkbox:checked + .toggle-label {
+  @apply bg-red-700;
+}
 @tailwind utilities;

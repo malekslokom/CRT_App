@@ -13,6 +13,7 @@ module.exports = {
       height: {          
             "10/12" : "83.333%",
             "1/3" :"33.333%",
+            
                         
       },
       boxShadow: {

@@ -1,16 +1,15 @@
-
-const state = { user: {}, isAuthenticated: false};//donnee mt3i
+const state = { user: {}, isAuthenticated: false }; //donnee mt3i
 const getters = {
   // @ts-ignore
   getUser: state => state.user,
   // @ts-ignore
   isAuthenticated: state => state.isAuthenticated,
   // @ts-ignore
-  isPresident: state => state.user.desc=="Présidente",
-   // @ts-ignore
-  isResponsableJeunes: state => state.user.desc=="Responsable jeunes",
-    // @ts-ignore
-  isVolontaire: state => state.user.desc=="Volontaire",
+  isPresident: state => state.user.desc == "Présidente",
+  // @ts-ignore
+  isResponsableJeunes: state => state.user.desc == "Responsable jeunes",
+  // @ts-ignore
+  isVolontaire: state => state.user.desc == "Volontaire"
 };
 
 const mutations = {
@@ -23,7 +22,6 @@ const mutations = {
   authenticate(state, auth: boolean) {
     state.isAuthenticated = auth;
   }
-
 };
 
 const actions = {};

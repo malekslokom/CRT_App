@@ -109,7 +109,7 @@ export default class NoteCalendar extends Vue {
   //}
   erreur = {
     titre: false,
-    description: false,
+    description: false
   };
   addEvent() {
     let err = false;

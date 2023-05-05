@@ -1,20 +1,15 @@
 <template>
-  <div>
-
-  </div>
+  <div></div>
 </template>
 
 <script lang="ts">
 import axios from "axios";
 import { Component, Vue } from "vue-property-decorator";
 
-
 @Component({
-  components: {},
+  components: {}
 })
 export default class Login extends Vue {
-   erreur=false;
-  
-  
+  erreur = false;
 }
 </script>

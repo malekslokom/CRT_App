@@ -225,7 +225,7 @@ export default class Footerpage extends Vue {
   erreur = {
     objet: false,
     msg: false,
-    email: false,
+    email: false
   };
   NotifSucc = false;
   NotifFaild = false;

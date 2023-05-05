@@ -690,7 +690,7 @@
 <script lang="ts">
 import axios from "axios";
 import dayjs from "dayjs";
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 @Component({ components: {} })
 export default class AjouterVolontaire extends Vue {
   NotifSucc = false;
@@ -899,7 +899,7 @@ export default class AjouterVolontaire extends Vue {
       this.erreur.MembreDepuis = false;
       this.erreur.MembreDepuis1 = false;
     }
-    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!re.test(this.user.email)) {
       this.erreur.email = true;
       this.erreur.email1 = true;

@@ -1,5 +1,5 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 import VueRouter, { RouteConfig } from "vue-router";
 import Home from "../views/Home.vue";
 import Login from "../views/auth/Login.vue";
@@ -16,7 +16,6 @@ import AjouterVolontaire from "../components/volunteers/AjouterVolontaire.vue";
 Vue.use(VueRouter);
 Vue.use(Vuex);
 const routes: Array<RouteConfig> = [
-
   {
     path: "/about",
     name: "About",
@@ -87,18 +86,18 @@ const router = new VueRouter({
   routes
 });
 router.beforeEach((to, from, next) => {
-  if(to.name=="accueil" && !localStorage.getItem("user")) return next("/login");
-  if(localStorage.getItem("user")){
-      // @ts-ignore
-    if(localStorage.getItem("user").type=='Présidente')
-    return next("/responsables");
-    }
-    if(to.name=="volontaires"){
-      // @ts-ignore
-      if(!localStorage.getItem("user").type=='Responsable jeunes')
-        return next(from.path);
-    } 
-    next()
-  
-})
+  if (to.name == "accueil" && !localStorage.getItem("user"))
+    return next("/login");
+  if (localStorage.getItem("user")) {
+    // @ts-ignore
+    if (localStorage.getItem("user").type == "Présidente")
+      return next("/responsables");
+  }
+  if (to.name == "volontaires") {
+    // @ts-ignore
+    if (!localStorage.getItem("user").type == "Responsable jeunes")
+      return next(from.path);
+  }
+  next();
+});
 export default router;

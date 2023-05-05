@@ -4,7 +4,7 @@ import router from "./router";
 import store from "./store";
 import "./assets/styles/index.css";
 import "@fortawesome/fontawesome-free/css/all.css";
-import 'vue-popperjs/dist/vue-popper.css';
+import "vue-popperjs/dist/vue-popper.css";
 
 Vue.config.productionTip = false;
 

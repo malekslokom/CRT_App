@@ -22,7 +22,7 @@
                   v-on:click="toggleTabs(1)"
                   v-bind:class="{
                     'text-red-700 text-sm font-medium bg-white': openTab !== 1,
-                    'text-white text-sm font-medium bg-red-700': openTab === 1,
+                    'text-white text-sm font-medium bg-red-700': openTab === 1
                   }"
                 >
                   <i class="fas fa-user text-base mr-1"></i> Profile
@@ -35,7 +35,7 @@
                   v-on:click="toggleTabs(2)"
                   v-bind:class="{
                     'text-red-700 text-sm font-medium bg-white': openTab !== 2,
-                    'text-white text-sm font-medium bg-red-700': openTab === 2,
+                    'text-white text-sm font-medium bg-red-700': openTab === 2
                   }"
                 >
                   <i class="fa fa-medkit text-base mr-1 "></i> CRT
@@ -47,7 +47,7 @@
                   v-on:click="toggleTabs(3)"
                   v-bind:class="{
                     'text-red-700 text-sm font-medium bg-white': openTab !== 3,
-                    'text-white text-sm font-medium bg-red-700': openTab === 3,
+                    'text-white text-sm font-medium bg-red-700': openTab === 3
                   }"
                 >
                   <i class="fas fa-cog text-base mr-1"></i> Compte
@@ -62,7 +62,7 @@
                   <div
                     v-bind:class="{
                       hidden: openTab !== 1,
-                      block: openTab === 1,
+                      block: openTab === 1
                     }"
                   >
                     <div class="flex items-center justify-start px-2">
@@ -292,7 +292,7 @@
                   <div
                     v-bind:class="{
                       hidden: openTab !== 2,
-                      block: openTab === 2,
+                      block: openTab === 2
                     }"
                   >
                     <div class="flex items-center justify-start px-2">
@@ -415,7 +415,7 @@
                   <div
                     v-bind:class="{
                       hidden: openTab !== 3,
-                      block: openTab === 3,
+                      block: openTab === 3
                     }"
                   >
                     <div class="flex items-center justify-start px-2">

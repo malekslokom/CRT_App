@@ -337,7 +337,7 @@ export default class Affichagevolentaires extends Vue {
     ["Vera Carpenter", "Monitorat", "Non"],
     ["Malek Slokom", "FPS", "Oui"],
     ["Ali Ben zaid", "FPS", "Oui"],
-    ["Manel", "Slokom", "Non"],
+    ["Manel", "Slokom", "Non"]
   ];
   suiv() {
     if (this.y < this.tab.length) {

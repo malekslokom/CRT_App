@@ -70,7 +70,6 @@
           <div class="hidden sm:block sm:ml-6">
             <div class="flex space-x-4">
               <router-link
-                v-if="vol"
                 to="/accueil"
                 class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white "
                 >Accueil</router-link
@@ -237,7 +236,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 @Component
 export default class Navbar extends Vue {
   showDropDownuser = false;

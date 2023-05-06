@@ -7,6 +7,7 @@ app.use(bodyParser.json());
 
 import apiRouter from "./routes/api/api.router";
 app.use("/api", apiRouter);
+
 app.use(cors());
 mongoose
   .connect(

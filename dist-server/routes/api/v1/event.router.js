@@ -40,24 +40,34 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
-var user_model_1 = __importDefault(require("../../../models/user.model"));
+var event_model_1 = __importDefault(require("../../../models/event.model"));
 var router = express_1.Router();
-router.post("/", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var foundUser;
+router.get("/", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var foundEvents;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, user_model_1.default.findOne({
-                    username: req.body.username,
-                    password: req.body.password,
-                })];
+            case 0: return [4 /*yield*/, event_model_1.default.find()];
             case 1:
-                foundUser = _a.sent();
-                console.log(foundUser);
-                if (!foundUser)
-                    res.status(400).send();
-                else {
-                    res.status(200).send(foundUser);
-                }
+                foundEvents = _a.sent();
+                res.status(200).send(foundEvents);
+                return [2 /*return*/];
+        }
+    });
+}); });
+router.post("/add-event", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var newEvent;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                newEvent = new event_model_1.default({
+                    titre: req.body.titre,
+                    description: req.body.description,
+                    date: req.body.date,
+                });
+                return [4 /*yield*/, newEvent.save()];
+            case 1:
+                _a.sent();
+                res.status(200).send();
                 return [2 /*return*/];
         }
     });

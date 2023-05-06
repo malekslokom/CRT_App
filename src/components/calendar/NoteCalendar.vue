@@ -36,15 +36,15 @@
         <div class="mb-4">
           <label
             class="block text-gray-700 text-sm font-bold mb-2"
-            for="Déscription"
+            for="Description"
           >
             Description
           </label>
           <textarea
             class=" w-full input"
-            id="Déscription"
+            id="Description"
             type="text"
-            placeholder="Déscription"
+            placeholder="Description"
             v-model="description"
           >
           </textarea>
@@ -52,17 +52,7 @@
             >Ce champ est obligatoire.</span
           >
         </div>
-        <!-- <div class="mb-6">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="volontaire">
-                                volontaire
-                            </label>
-                            <input class=" w-full input" id="volontaire" type="text" v-model="volontaire" hidden>
-                           <select @change="ajoutvolontaire($event)" name="liste" id="liste" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" >
-                                
-                                <option v-for="x in n7ebnor9ed" :key="x" :value="x">{{x}}</option>
-                                
-                            </select>
-                            </div>-->
+
         <div class="flex items-center justify-between">
           <button
             type="submit"
@@ -85,14 +75,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 //import { delete } from 'vue/types/umd';
 
 @Component
 export default class NoteCalendar extends Vue {
-  @Prop()
-  jour!: number;
-  n7ebnor9ed = ["1", "2", "3", "4", "5"];
   fermerNote() {
     this.$emit("close");
   }
@@ -101,20 +88,14 @@ export default class NoteCalendar extends Vue {
   vol = [""];
   titre = "";
   description = "";
-  //ajoutvolontaire(event){
-  //  this.vol.push(event.target.value);
-  //  delete this.n7ebnor9ed[this.n7ebnor9ed.indexOf(event.target.value)];
-  //  console.log(this.vol);
-  //  console.log(this.n7ebnor9ed)
-  //}
+
   erreur = {
     titre: false,
-    description: false
+    description: false,
   };
   addEvent() {
     let err = false;
     if (this.titre == "") {
-      console.log("aaaa");
       this.erreur.titre = true;
       err = true;
     } else {
@@ -127,7 +108,7 @@ export default class NoteCalendar extends Vue {
       this.erreur.description = false;
     }
     if (!err) {
-      this.$emit("add", this.titre, this.jour);
+      this.$emit("add", this.titre, this.description);
       this.$emit("close");
     }
   }

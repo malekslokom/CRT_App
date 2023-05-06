@@ -6,7 +6,7 @@ router.post("/subscription", async (req, res) => {
   const foundUser = await user.findOne({ _id: req.body._id });
   if (foundUser)
     await foundUser.update({
-      subscriptionEndpoint: req.body.subscription.endpoint,
+      subscriptionEndpoint: req.body.currentToken,
     });
   console.log(req.body);
   res.status(200).send();

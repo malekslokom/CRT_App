@@ -12,6 +12,9 @@
 
 <script lang="ts">
 import Navbar from "@/components/shared/Navbar.vue";
+import { initializeApp } from "firebase/app";
+import { getMessaging, getToken } from "firebase/messaging";
+
 import { Component, Vue } from "vue-property-decorator";
 
 @Component({ components: { Navbar } })
@@ -19,52 +22,53 @@ export default class App extends Vue {
   get isAuthenticated() {
     return this.$store.getters.isAuthenticated;
   }
-  mounted() {
+  async mounted() {
     const user = localStorage.getItem("user");
     if (user) {
       this.$store.commit("setUser", JSON.parse(user));
       this.$store.commit("authenticate", true);
-      console.log(user);
 
-      // Check if the user has granted permission to show notifications
-      if (Notification.permission === "granted") {
-        // Get the Service Worker registration
-        navigator.serviceWorker.getRegistration().then((registration) => {
-          // Subscribe the user to push notifications
-          // @ts-ignore
-          registration.pushManager
-            .subscribe({
-              userVisibleOnly: true,
-              applicationServerKey:
-                "BGrIYlt0V8yKAZ0-Eenr_8H6TVzH16hvpT1RypKVP7Jf446GrPmKAl-_JlLIlywYdTb6sU_iPRIFaeUNdJxhMJo",
-            })
-            .then((subscription) => {
-              // Send the subscription object to your server to save it
-              fetch("/api/v1/push-notifications/subscription", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  subscription,
-                  _id: JSON.parse(user)._id,
-                }),
-              });
-            })
-            .catch((err) => {
-              console.error(
-                "Failed to subscribe the user to push notifications",
-                err
-              );
+      const firebaseConfig = {
+        apiKey: "AIzaSyBy0mf6sYtk5C3iaZyLOPkvDTpkKX6AmR0",
+        authDomain: "crtapp-f7a6e.firebaseapp.com",
+        projectId: "crtapp-f7a6e",
+        storageBucket: "crtapp-f7a6e.appspot.com",
+        messagingSenderId: "1035988667108",
+        appId: "1:1035988667108:web:a7afcd94fca6cb8a90baf1",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+
+      // Initialize Firebase Cloud Messaging and get a reference to the service
+      const messaging = getMessaging(app);
+
+      getToken(messaging, {
+        vapidKey:
+          "BN4MONe9XMfpC-NWYXPSGnIzkb6uxYNyyRgz1cgmvMcyDLXvIlvUtJFpBOVYw7z0ATpOBJeF89op7lgW_3pIzMM",
+      })
+        .then((currentToken) => {
+          if (currentToken) {
+            fetch("/api/v1/push-notifications/subscription", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                currentToken,
+                _id: JSON.parse(user)._id,
+              }),
             });
-        });
-      } else if (Notification.permission !== "denied") {
-        // Request permission to show notifications
-        Notification.requestPermission().then((permission) => {
-          if (permission === "granted") {
-            // Subscribe the user to push notifications
-            // (same code as above)
+          } else {
+            // Show permission request UI
+            console.log(
+              "No registration token available. Request permission to generate one."
+            );
+            // ...
           }
+        })
+        .catch((err) => {
+          console.log("An error occurred while retrieving token. ", err);
+          // ...
         });
-      }
     }
   }
 

@@ -5,31 +5,6 @@ import {
 } from "../../../models/event.model";
 import user from "../../../models/user.model";
 const router = Router();
-const OneSignal = require("@onesignal/node-onesignal");
-
-const user_key_provider = {
-  getToken() {
-    return "NzM0OTM3Y2QtYWE3My00YTQ5LThiMzItOTQwMjZjNjAyOTlh"; //user_auth_key
-  },
-};
-
-const app_key_provider = {
-  getToken() {
-    return "ZGM3OGU5ZGEtODI2Yi00YmZmLWFlY2EtNTQ0OWZlYWFiZDA4";
-  },
-};
-let configuration = OneSignal.createConfiguration({
-  authMethods: {
-    user_key: {
-      tokenProvider: user_key_provider,
-    },
-    app_key: {
-      tokenProvider: app_key_provider,
-    },
-  },
-});
-
-const client = new OneSignal.DefaultApi(configuration);
 
 router.get("/", async (req, res) => {
   const foundEvents = await event.find();
@@ -46,24 +21,52 @@ router.post("/add-event", async (req, res) => {
 
   const foundUsers = await user.find();
   foundUsers.forEach(async (e) => {
-    const message = {
-      app_id: "8d5befe8-b14a-423f-ba14-e342226e1fec",
-      contents: {
-        en: "This is a test notification",
-      },
-      include_player_ids: [e.subscriptionEndpoint],
-    };
+    console.log(e.subscriptionEndpoint);
 
-    const options = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
-    const response = await client.createNotification(message, options);
+    sendPushNotification(
+      e.subscriptionEndpoint,
+      "New message",
+      "You have a new message!"
+    );
   });
 
   res.status(200).send();
 });
 
 export default router;
+
+const fetch = require("node-fetch");
+
+// The FCM server key can be obtained from the Firebase console under Project Settings > Cloud Messaging
+const fcmServerKey =
+  "AAAA8TW8iuQ:APA91bE1Z_GBz5jLyMNcubGFDpj5HsYXuwwM7Rg_In4UxZh8rVKO4iHj0Yi_f6ZuboXXK2bgdbUcrFRHPSsAhcrOXIPtrZLTzs4g5HGdCOutnhEQFOC9K78STmWaz-1Q4VXGs5A8RNxG";
+
+//@ts-ignore
+async function sendPushNotification(registrationToken, title, body) {
+  const response = await fetch("https://fcm.googleapis.com/fcm/send", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `key=${fcmServerKey}`,
+    },
+    body: JSON.stringify({
+      to: registrationToken,
+      notification: {
+        title,
+        body,
+        click_action: "https://example.com", // optional, can be used to open a URL when the notification is clicked
+      },
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `Failed to send push notification: ${response.status} - ${response.statusText}`
+    );
+  }
+
+  const responseJson = await response.json();
+  console.log(
+    `Push notification sent with message ID: ${responseJson.message_id}`
+  );
+}

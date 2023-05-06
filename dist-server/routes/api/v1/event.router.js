@@ -43,28 +43,6 @@ var express_1 = require("express");
 var event_model_1 = __importDefault(require("../../../models/event.model"));
 var user_model_1 = __importDefault(require("../../../models/user.model"));
 var router = express_1.Router();
-var OneSignal = require("@onesignal/node-onesignal");
-var user_key_provider = {
-    getToken: function () {
-        return "NzM0OTM3Y2QtYWE3My00YTQ5LThiMzItOTQwMjZjNjAyOTlh"; //user_auth_key
-    },
-};
-var app_key_provider = {
-    getToken: function () {
-        return "ZGM3OGU5ZGEtODI2Yi00YmZmLWFlY2EtNTQ0OWZlYWFiZDA4";
-    },
-};
-var configuration = OneSignal.createConfiguration({
-    authMethods: {
-        user_key: {
-            tokenProvider: user_key_provider,
-        },
-        app_key: {
-            tokenProvider: app_key_provider,
-        },
-    },
-});
-var client = new OneSignal.DefaultApi(configuration);
 router.get("/", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var foundEvents;
     return __generator(this, function (_a) {
@@ -91,27 +69,10 @@ router.post("/add-event", function (req, res) { return __awaiter(void 0, void 0,
             case 1:
                 foundUsers = _a.sent();
                 foundUsers.forEach(function (e) { return __awaiter(void 0, void 0, void 0, function () {
-                    var message, options, response;
                     return __generator(this, function (_a) {
-                        switch (_a.label) {
-                            case 0:
-                                message = {
-                                    app_id: "8d5befe8-b14a-423f-ba14-e342226e1fec",
-                                    contents: {
-                                        en: "This is a test notification",
-                                    },
-                                    include_player_ids: [e.subscriptionEndpoint],
-                                };
-                                options = {
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                    },
-                                };
-                                return [4 /*yield*/, client.createNotification(message, options)];
-                            case 1:
-                                response = _a.sent();
-                                return [2 /*return*/];
-                        }
+                        console.log(e.subscriptionEndpoint);
+                        sendPushNotification(e.subscriptionEndpoint, "New message", "You have a new message!");
+                        return [2 /*return*/];
                     });
                 }); });
                 res.status(200).send();
@@ -120,3 +81,41 @@ router.post("/add-event", function (req, res) { return __awaiter(void 0, void 0,
     });
 }); });
 exports.default = router;
+var fetch = require("node-fetch");
+// The FCM server key can be obtained from the Firebase console under Project Settings > Cloud Messaging
+var fcmServerKey = "AAAA8TW8iuQ:APA91bE1Z_GBz5jLyMNcubGFDpj5HsYXuwwM7Rg_In4UxZh8rVKO4iHj0Yi_f6ZuboXXK2bgdbUcrFRHPSsAhcrOXIPtrZLTzs4g5HGdCOutnhEQFOC9K78STmWaz-1Q4VXGs5A8RNxG";
+//@ts-ignore
+function sendPushNotification(registrationToken, title, body) {
+    return __awaiter(this, void 0, void 0, function () {
+        var response, responseJson;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, fetch("https://fcm.googleapis.com/fcm/send", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: "key=" + fcmServerKey,
+                        },
+                        body: JSON.stringify({
+                            to: registrationToken,
+                            notification: {
+                                title: title,
+                                body: body,
+                                click_action: "https://example.com",
+                            },
+                        }),
+                    })];
+                case 1:
+                    response = _a.sent();
+                    if (!response.ok) {
+                        throw new Error("Failed to send push notification: " + response.status + " - " + response.statusText);
+                    }
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    responseJson = _a.sent();
+                    console.log("Push notification sent with message ID: " + responseJson.message_id);
+                    return [2 /*return*/];
+            }
+        });
+    });
+}

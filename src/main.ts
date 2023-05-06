@@ -21,16 +21,6 @@ if ("serviceWorker" in navigator) {
 
 Vue.config.productionTip = false;
 
-import { initializeApp } from "firebase/app";
-
-const firebaseConfig = {
-  // Your Firebase configuration goes here
-};
-
-const app = initializeApp(firebaseConfig);
-
-export default app;
-
 new Vue({
   router,
   store,

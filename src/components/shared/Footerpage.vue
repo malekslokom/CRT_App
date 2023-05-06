@@ -97,17 +97,6 @@
             <input
               class="w-full input"
               type="text"
-              placeholder="Destinataire"
-              v-model="email"
-            /><br />
-          </div>
-          <span class="text-gray-400 w-full" v-if="erreur.email"
-            >Ce champ ne ressemble pas à une adresse e-mail valide</span
-          >
-          <div class="flex items-center mb-4">
-            <input
-              class="w-full input"
-              type="text"
               placeholder="Objet"
               v-model="objet"
             />
@@ -217,55 +206,52 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import axios from 'axios';
 @Component
 export default class Footerpage extends Vue {
   objet = "";
   msg = "";
-  email = "";
   erreur = {
     objet: false,
     msg: false,
-    email: false,
   };
   NotifSucc = false;
   NotifFaild = false;
-  envoyer() {
-    let err = false;
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (!re.test(this.email)) {
-      this.erreur.email = true;
-      err = true;
-    } else {
-      this.erreur.email = false;
-    }
-    if (this.objet == "") {
-      this.erreur.objet = true;
-      err = true;
-    } else {
-      this.erreur.objet = false;
-    }
-    if (this.msg == "") {
-      this.erreur.msg = true;
-      err = true;
-    } else {
-      this.erreur.msg = false;
-    }
-    if (err) this.NotifFaild = true;
-    if (!err) {
-      /*try {
-        const res = await axios.post("/api/v1/volontaire/add", this.user);
-      } catch (err) {
-        console.log(err);
-      }*/
+  async envoyer() {
+  let err = false;
+  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  if (this.objet == "") {
+    this.erreur.objet = true;
+    err = true;
+  } else {
+    this.erreur.objet = false;
+  }
+  if (this.msg == "") {
+    this.erreur.msg = true;
+    err = true;
+  } else {
+    this.erreur.msg = false;
+  }
+  if (err) this.NotifFaild = true;
+  if (!err) {
+    try {
+      console.log(this.objet)
+      const res = await axios.post('/api/v1/emails/send', { objet: this.objet, message: this.msg });
+      console.log(res.data);
       this.NotifSucc = true;
+    } catch (err) {
+      console.log(err);
+      this.NotifFaild = true;
     }
   }
+}
   closeFaild() {
     this.NotifFaild = !this.NotifFaild;
   }
   closeSuccess() {
     this.NotifSucc = !this.NotifSucc;
   }
+  
 }
 </script>
 <style></style>

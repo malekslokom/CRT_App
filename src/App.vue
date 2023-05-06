@@ -11,9 +11,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
 import Navbar from "@/components/shared/Navbar.vue";
-import axios from "axios";
+import { Component, Vue } from "vue-property-decorator";
 
 @Component({ components: { Navbar } })
 export default class App extends Vue {
@@ -22,10 +21,50 @@ export default class App extends Vue {
   }
   mounted() {
     const user = localStorage.getItem("user");
-    console.log(user);
     if (user) {
       this.$store.commit("setUser", JSON.parse(user));
       this.$store.commit("authenticate", true);
+      console.log(user);
+
+      // Check if the user has granted permission to show notifications
+      if (Notification.permission === "granted") {
+        // Get the Service Worker registration
+        navigator.serviceWorker.getRegistration().then((registration) => {
+          // Subscribe the user to push notifications
+          // @ts-ignore
+          registration.pushManager
+            .subscribe({
+              userVisibleOnly: true,
+              applicationServerKey:
+                "BGrIYlt0V8yKAZ0-Eenr_8H6TVzH16hvpT1RypKVP7Jf446GrPmKAl-_JlLIlywYdTb6sU_iPRIFaeUNdJxhMJo",
+            })
+            .then((subscription) => {
+              // Send the subscription object to your server to save it
+              fetch("/api/v1/push-notifications/subscription", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  subscription,
+                  _id: JSON.parse(user)._id,
+                }),
+              });
+            })
+            .catch((err) => {
+              console.error(
+                "Failed to subscribe the user to push notifications",
+                err
+              );
+            });
+        });
+      } else if (Notification.permission !== "denied") {
+        // Request permission to show notifications
+        Notification.requestPermission().then((permission) => {
+          if (permission === "granted") {
+            // Subscribe the user to push notifications
+            // (same code as above)
+          }
+        });
+      }
     }
   }
 

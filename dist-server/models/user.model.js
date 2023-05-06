@@ -25,5 +25,6 @@ var UserSchema = new mongoose_1.default.Schema({
     MembreDepuis: String,
     Attestation: String,
     paye: String,
+    subscriptionEndpoint: String,
 });
 exports.default = mongoose_1.default.model("User", UserSchema);

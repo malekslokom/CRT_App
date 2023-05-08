@@ -65,8 +65,11 @@ router.post("/add-event", function (req, res) { return __awaiter(void 0, void 0,
                     description: req.body.description,
                     date: req.body.date,
                 });
-                return [4 /*yield*/, user_model_1.default.find()];
+                return [4 /*yield*/, newEvent.save()];
             case 1:
+                _a.sent();
+                return [4 /*yield*/, user_model_1.default.find()];
+            case 2:
                 foundUsers = _a.sent();
                 foundUsers.forEach(function (e) { return __awaiter(void 0, void 0, void 0, function () {
                     return __generator(this, function (_a) {

@@ -17,7 +17,7 @@ router.post("/add-event", async (req, res) => {
     description: req.body.description,
     date: req.body.date,
   });
-  //await newEvent.save();
+  await newEvent.save();
 
   const foundUsers = await user.find();
   foundUsers.forEach(async (e) => {
